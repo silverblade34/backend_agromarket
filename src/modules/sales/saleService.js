@@ -352,11 +352,12 @@ const listSales = async (userId, role) => {
       SELECT s.id as saleId, s.customer_id, s.amount, cs.firstName as customerName, 
              pr.name as productName, s.totalPrice, ds.product_id, ds.unitPrice, 
              ds.igv, ds.extend_id, ds.status, ds.subtotal, 
-             img.path as productImagePath
+             img.path as productImagePath, pcer.bussinesName as producerName
       FROM tb_sales s
       JOIN tb_detailSale ds ON s.id = ds.sale_id
       JOIN tb_customer cs ON cs.id = s.customer_id
       JOIN tb_products pr ON pr.id = ds.product_id
+      JOIN tb_producers pcer ON pcer.id = pr.producer_id
       LEFT JOIN tb_image img ON img.product_id = pr.id
       AND img.id = (SELECT MIN(id) FROM tb_image WHERE product_id = pr.id)
       WHERE s.customer_id = (SELECT id FROM tb_customer WHERE user_id = ?)
